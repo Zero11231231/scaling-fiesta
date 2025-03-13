@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("LtJ5V8ImxZO7TtnIK");
+        })();
+    </script>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-image: url('TWA.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+      width: 70%;
+      max-width: 600px;
+      background-color: transparent;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+        h2 {
+            color: #2E8B57;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+            border: 1px solid green;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #FFD700;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFC107;
+        }
+
+        .toggle-form {
+            margin-top: 10px;
+        }
+
+        .toggle-form a {
+            color: #2E8B57;
+            text-decoration: none;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .otp-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+    <form id="register-form">
+        <label for="register-id">ID Number</label>
+        <input type="text" id="register-id" minlength="8" maxlength="10" required>
+
+        <label for="register-name">Full Name</label>
+        <input type="text" id="register-name" required>
+
+        <label for="register-grade">Grade</label>
+        <select id="register-grade" name="grade">
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+
+        <label for="register-section">Sections</label>
+        <select id="register-section" name="Sections">
+            <option value="Pacioli">Pacioli</option>
+            <option value="Schumpeter">Schumpeter</option>
+            <option value="Comte">Comte</option>
+            <option value="Erasmus">Erasmus</option>
+            <option value="Petrarch">Petrarch</option>
+            <option value="Copernicus">Copernicus</option>
+            <option value="Lovelace">Lovelace</option>
+            <option value="Pascal">Pascal</option>
+            <option value="Tesla">Tesla</option>
+            <option value="Hilton">Hilton</option>
+            <option value="Marconi">Marconi</option>
+            <option value="Smith">Smith</option>
+            <option value="Keynes">Keynes</option>
+            <option value="Aristotle">Aristotle</option>
+            <option value="Plato">Plato</option>
+            <option value="Socrates">Socrates</option>
+            <option value="Galilei">Galilei</option>
+            <option value="Faraday">Faraday</option>
+            <option value="Newton">Newton</option>
+            <option value="Prosser">Prosser</option>
+            <option value="Babbage">Babbage</option>
+        </select>
+
+        <label for="register-email">Email</label>
+        <input type="email" id="register-email" required>
+
+        <button type="button" onclick="sendOTP()">Send OTP</button>
+
+        <div class="otp-section">
+            <label for="otp">Enter OTP</label>
+            <input type="text" id="otp" required>
+        </div>
+
+        <label for="register-password">Password</label>
+        <input type="password" id="register-password" required>
+
+        <label for="register-id-picture">Upload ID Picture</label>
+        <input type="file" id="register-id-picture" accept="image/*">
+
+        <button type="submit" disabled id="register-btn">Register</button>
+    </form>
+
+    <div class="toggle-form">
+        Already have an account? <a href="login.html">Login</a>
+    </div>
+    <div class="error-message" id="register-error"></div>
+</div>
+
+<script>
+    let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+    let generatedOTP = "";
+
+    const sections = {
+        "11": ["Pacioli", "Schumpeter", "Comte", "Erasmus", "Petrarch", "Copernicus", "Lovelace", "Pascal", "Tesla", "Hilton", "Marconi"],
+        "12": ["Smith", "Keynes", "Aristotle", "Plato", "Socrates", "Galilei", "Faraday", "Newton", "Prosser", "Babbage"]
+    };
+
+    function updateSections() {
+        let grade = document.getElementById("register-grade").value;
+        let sectionDropdown = document.getElementById("register-section");
+        sectionDropdown.innerHTML = "";
+
+        sections[grade].forEach(section => {
+            let option = document.createElement("option");
+            option.value = section;
+            option.textContent = section;
+            sectionDropdown.appendChild(option);
+        });
+    }
+
+    document.getElementById("register-grade").addEventListener("change", updateSections);
+    updateSections();
+
+    function sendOTP() {
+        const email = document.getElementById('register-email').value;
+
+        if (!email) {
+            document.getElementById('register-error').textContent = "Please enter your email.";
+            return;
+        }
+
+        generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const templateParams = {
+            to_email: email,
+            otp: generatedOTP
+        };
+
+        emailjs.send("service_ksfgage", "template_yc8r04e", templateParams)
+            .then(function(response) {
+                document.querySelector('.otp-section').style.display = "block";
+                document.getElementById('register-btn').disabled = false;
+                alert("OTP sent! Check your email.");
+            }, function(error) {
+                document.getElementById('register-error').textContent = "Failed to send OTP.";
+            });
+    }
+
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let id = document.getElementById('register-id').value;
+        let fullName = document.getElementById('register-name').value;
+        let grade = document.getElementById('register-grade').value;
+        let section = document.getElementById('register-section').value;
+        let email = document.getElementById('register-email').value;
+        let password = document.getElementById('register-password').value;
+        let idPicture = document.getElementById('register-id-picture').files[0];
+        let otpInput = document.getElementById('otp').value;
+
+        if (otpInput !== generatedOTP) {
+            document.getElementById('register-error').textContent = "Invalid OTP.";
+            return;
+        }
+
+        if (registeredUsers.some(user => user.id === id)) {
+            document.getElementById('register-error').textContent = 'ID number already taken.';
+            return;
+        }
+
+        let idPictureURL = idPicture ? URL.createObjectURL(idPicture) : null;
+
+        registeredUsers.push({
+            id,
+            fullName,
+            grade,
+            section,
+            email,
+            password,
+            idPicture: idPictureURL
+        });
+
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+        document.getElementById('register-form').reset();
+        alert('Registration successful! Redirecting to login.');
+        window.location.href = 'login.html';
+    });
+</script>

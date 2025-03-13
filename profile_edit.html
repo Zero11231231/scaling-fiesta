@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-image: url('TWA.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2E8B57;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        input[disabled] {
+            background-color: #f0f0f0;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 10px auto;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #FFD700;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #FFC107;
+        }
+
+        .logout {
+            background-color: red;
+        }
+
+        .logout:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Edit Profile</h2>
+
+    <label for="profile-pic">Profile Picture</label>
+    <img id="profile-image" src="default-profile.png" alt="Profile Picture">
+    <input type="file" id="profile-pic" accept="image/*">
+
+    <label>Name</label>
+    <input type="text" id="profile-name">
+
+    <label>Grade</label>
+    <select id="profile-grade">
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+
+    <label>Section</label>
+    <select id="profile-section"></select>
+
+    <label>ID Number</label>
+    <input type="text" id="profile-id" disabled>
+
+    <label>Email or Contact</label>
+    <input type="text" id="profile-email">
+
+    <label>Birthdate</label>
+    <input type="date" id="profile-birthday">
+
+    <button id="save-btn">Save Changes</button>
+    <button id="final-save-btn">Final Save</button>
+    <button id="logout-btn" class="logout">Logout</button>
+</div>
+
+<script>
+    let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (!loggedInUser) {
+        window.location.href = 'login.html';
+    } else {
+        document.getElementById('profile-id').value = loggedInUser.id;
+        document.getElementById('profile-name').value = loggedInUser.name || "";
+        document.getElementById('profile-grade').value = loggedInUser.grade || "";
+        document.getElementById('profile-email').value = loggedInUser.emailOrPhone || "";
+        document.getElementById('profile-birthday').value = loggedInUser.birthdate || "";
+
+        if (loggedInUser.idPicture) {
+            document.getElementById('profile-image').src = loggedInUser.idPicture;
+        }
+    }
+
+    const sections = {
+        "11": ["Pacioli", "Schumpeter", "Comte", "Erasmus", "Petrarch", "Copernicus", "Lovelace", "Pascal", "Tesla", "Hilton", "Marconi"],
+        "12": ["Smith", "Keynes", "Aristotle", "Plato", "Socrates", "Galilei", "Faraday", "Newton", "Prosser", "Babbage"]
+    };
+
+    function updateSections() {
+        let grade = document.getElementById("profile-grade").value;
+        let sectionDropdown = document.getElementById("profile-section");
+        sectionDropdown.innerHTML = "";
+
+        sections[grade].forEach(section => {
+            let option = document.createElement("option");
+            option.value = section;
+            option.textContent = section;
+            sectionDropdown.appendChild(option);
+        });
+
+        if (loggedInUser.section && sections[grade].includes(loggedInUser.section)) {
+            sectionDropdown.value = loggedInUser.section;
+        }
+    }
+
+    document.getElementById("profile-grade").addEventListener("change", updateSections);
+    updateSections();
+
+    document.getElementById('profile-pic').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('profile-image').src = reader.result;
+                loggedInUser.idPicture = reader.result;
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+                let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                let userIndex = users.findIndex(user => user.id === loggedInUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].idPicture = reader.result;
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('save-btn').addEventListener('click', function() {
+        let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        let userIndex = users.findIndex(user => user.id === loggedInUser.id);
+
+        if (userIndex !== -1) {
+            users[userIndex].name = document.getElementById('profile-name').value;
+            users[userIndex].birthdate = document.getElementById('profile-birthday').value;
+            users[userIndex].grade = document.getElementById('profile-grade').value;
+            users[userIndex].section = document.getElementById('profile-section').value;
+            users[userIndex].emailOrPhone = document.getElementById('profile-email').value;
+            users[userIndex].idPicture = loggedInUser.idPicture;
+
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+            localStorage.setItem('loggedInUser', JSON.stringify(users[userIndex]));
+
+            alert("Profile updated!");
+        } else {
+            alert("Error: User not found.");
+        }
+    });
+
+    document.getElementById('final-save-btn').addEventListener('click', function() {
+        document.querySelectorAll("input, select, button").forEach(el => el.disabled = true);
+        localStorage.setItem(`profileComplete_${loggedInUser.id}`, "true");
+
+        alert("Final profile saved! Redirecting to main page...");
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('loggedInUser');
+        window.location.href = 'login.html';
+    });
+</script>
+
+</body>
+</html>

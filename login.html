@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('TWA.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2E8B57;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #FFD700;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFC107;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .toggle-form a {
+            color: #2E8B57;
+            text-decoration: none;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+    <form id="login-form">
+        <label for="login-id">ID Number</label>
+        <input type="text" id="login-id" minlength="8" maxlength="10" required>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" required>
+        <button type="submit">Login</button>
+    </form>
+    <div class="toggle-form">
+        Don't have an account? <a href="register.html">Register</a>
+    </div>
+    <div class="toggle-form">
+        Forgot password? <a href="ForgotPassword.html">Forgot password</a>
+    </div>
+    <div class="error-message" id="login-error"></div>
+</div>
+
+<script>
+    let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let id = document.getElementById('login-id').value;
+        let password = document.getElementById('login-password').value;
+        let errorMessage = document.getElementById('login-error');
+
+        let user = registeredUsers.find(user => user.id === id && user.password === password);
+
+        if (user) {
+            localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+            let userProfileComplete = localStorage.getItem(`profileComplete_${user.id}`);
+            if (userProfileComplete) {
+                window.location.href = 'index.html';
+            } else {
+                window.location.href = 'profile_edit.html';
+            }
+        } else {
+            errorMessage.textContent = 'Invalid ID number or password. Please register first.';
+        }
+    });
+</script>
+
+</body>
+</html>

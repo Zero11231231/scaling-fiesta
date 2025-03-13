@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('TWA3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2E8B57;
+        }
+
+        img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .profile-info {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            color: white;
+            background: #2E8B57;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #1d6b43;
+        }
+
+        .logout {
+            background: red;
+        }
+
+        .logout:hover {
+            background: darkred;
+        }
+       
+        
+    </style>
+</head>
+<body onload="loadProfile()">
+    <img id="clickableImage" src="logo.png" alt="Clickable Image">
+
+    </div>
+    <div class="container">
+        <h2>Student Profile</h2>
+        <img id="profile-pic" src="default-profile.png" alt="Profile Picture">
+        <p class="profile-info"><strong>Name:</strong> <span id="profile-name">Loading...</span></p>
+        <p class="profile-info"><strong>ID Number:</strong> <span id="profile-id">Loading...</span></p>
+        <p class="profile-info"><strong>Birthdate:</strong> <span id="profile-birthdate">Loading...</span></p>
+        <p class="profile-info"><strong>Grade:</strong> <span id="profile-grade">Loading...</span></p>
+        <p class="profile-info"><strong>Section:</strong> <span id="profile-section">Loading...</span></p>
+        <a href="index.html" class="btn">Back to Home</a>
+        <button class="btn logout" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function loadProfile() {
+            let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                alert("No profile found. Please log in first.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            let existingUser = users.find(user => user.id === loggedInUser.id);
+
+            if (!existingUser) {
+                alert("User data not found. Please register again.");
+                window.location.href = 'register.html';
+                return;
+            }
+
+            document.getElementById('profile-name').textContent = existingUser.name || "Not Set";
+            document.getElementById('profile-id').textContent = existingUser.id || "Not Set";
+            document.getElementById('profile-birthdate').textContent = existingUser.birthdate || "Not Set";
+            document.getElementById('profile-grade').textContent = existingUser.grade || "Not Set";
+            document.getElementById('profile-section').textContent = existingUser.section || "Not Set";
+
+            if (existingUser.idPicture) {
+                document.getElementById('profile-pic').src = existingUser.idPicture;
+            } else {
+                document.getElementById('profile-pic').src = "default-profile.png";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+        
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+
+<html>
+<head>
+<title>Tayabas Western Academy: Digital Payment Portal</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body id="top">
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+<div class="wrapper row0">
+  <div id="topbar" class="clear"> 
+    <!-- ################################################################################################ -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Student Login</a></li>
+      </ul>
+    </nav>
+    <!-- ################################################################################################ --> 
+  </div>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+<div class="wrapper row1">
+  <header id="header" class="clear"> 
+    <!-- ################################################################################################ -->
+    <div id="logo" class="fl_left">
+      <h1><a href="index.html">Tayabas Western Academy</a></h1>
+      <p style= "color: white;">Founded 1928</p>
+    </div>
+    <!-- ################################################################################################ --> 
+  </header>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+<div class="wrapper row2">
+  <div class="rounded">
+    <nav id="mainav" class="clear"> 
+      <!-- ################################################################################################ -->
+      <ul class="clear">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a class="drop" href="#">Pay Now</a>
+          <ul>
+            <li><a href="epermit.html">Payment Page</a></li>
+            <li><a href="student_status.html">MyOnline Permit</a></li>
+            <li><a href="student_fees.html">Other fees</a></li>
+          </ul>
+        </li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Contact us</a></li>
+        <li><a href="Profile.html">Profile</a></li>
+        <li><a class="openbtn" onclick="openNav()">☰</a></li>
+
+        <style>
+        
+        
+          
+          .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+          }
+          
+          .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+          }
+          
+          .sidebar a:hover {
+            color: #f1f1f1;
+          }
+          
+          .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+          }
+          
+          .openbtn {
+            cursor: pointer;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+          }
+          
+          .openbtn:hover {
+            background-color: #444;
+          }
+          
+          #main {
+            transition: margin-right .5s;
+            padding: 16px;
+          }
+          
+        
+          @media screen and (max-height: 450px) {
+            .sidebar {padding-top: 15px;}
+            .sidebar a {font-size: 18px;}
+          }
+
+          .collapsible {
+  background-color: #4d6f31;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  border-radius: 1px;
+}
+
+ .collapsible:hover {
+  background-color: #af720aef;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+          </style>
+          </head>
+          <body>
+          
+          <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <a style="color: #4d6f31; font-size: x-large; text-align: left;" href="#">The School Overview</a>
+            <a href="Philosophy.html">PMVGO</h1>
+            
+         
+
+              <button class="collapsible">ABOUT</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+
+<button class="collapsible">Open Section 1</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+<button class="collapsible">Open Section 2</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+<button class="collapsible">Open Section 3</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+          
+          
+          <script>
+          function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+          
+          }
+          
+          function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+         
+          }
+
+          var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+          
+          </script>
+             
+          </body>
+          </html> 
+          
+      
+      </ul>
+      <!-- ################################################################################################ --> 
+    </nav>
+  </div>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+<div class="wrapper">
+  <div id="slider">
+    <div id="slide-wrapper" class="rounded clear"> 
+      <!-- ################################################################################################ -->
+      <figure id="slide-1"><a class="view" href="#"><img src="images/demo/slider/1.png" alt=""></a>
+        <figcaption>
+          <h2>Tayabas Western Academy</h2>
+          <p>For more than 9 decades, Tayabas Western Academy is known for its tagline "The School of Choice". This institution touches not only the minds of the learners but also their lives by providing quality education.</p>
+          <p class="right"><a href="#">Continue Reading &raquo;</a></p>
+        </figcaption>
+      </figure>
+      <figure id="slide-2"><a class="view" href="#"><img src="images/demo/slider/2.png" alt=""></a>
+        <figcaption>
+          <h2>About The Online Payment System</h2>
+          <p>The Online Payment System is an ongoing project that aims to develop an easier alternative payment method.</p>
+          
+      </figure>
+      <figure id="slide-3"><a class="view" href="#"><img src="images/demo/slider/3.png" alt=""></a>
+        <figcaption>
+          <h2>The School's PVMGO</h2>
+          <p>Attincidunt vel nam a maurisus lacinia consectetus magnisl sed ac morbi. Inmaurisus habitur pretium eu et ac vest penatibus id lacus parturpis.</p>
+          <p class="right"><a href="#">Continue Reading &raquo;</a></p>
+        </figcaption>
+      </figure>
+      <figure id="slide-4"><a class="view" href="#"><img src="images/demo/slider/4.png" alt=""></a>
+        <figcaption>
+          <h2>School Calendar of Events</h2>
+          <p>Attincidunt vel nam a maurisus lacinia consectetus magnisl sed ac morbi. Inmaurisus habitur pretium eu et ac vest penatibus id lacus parturpis.</p>
+          <p class="right"><a href="#">Continue Reading &raquo;</a></p>
+        </figcaption>
+      </figure>
+      <figure id="slide-5"><a class="view" href="#"><img src="images/demo/slider/5.png" alt=""></a>
+        <figcaption>
+          <h2>Latest School News &amp; Events</h2>
+          <p>Attincidunt vel nam a maurisus lacinia consectetus magnisl sed ac morbi. Inmaurisus habitur pretium eu et ac vest penatibus id lacus parturpis.</p>
+          <p class="right"><a href="#">Continue Reading &raquo;</a></p>
+        </figcaption>
+      </figure>
+      <!-- ################################################################################################ -->
+      <ul id="slide-tabs">
+        <li><a href="#slide-1">All About Tayabas Western Academy</a></li>
+        <li><a href="#slide-2">About The Online Payment System</a></li>
+        <li><a href="#slide-3">The School's PVMGO</a></li>
+        <li><a href="#slide-4">School Calendar of Events</a></li>
+        <li><a href="#slide-5">Latest School News &amp; Events</a></li>
+      </ul>
+      <!-- ################################################################################################ --> 
+    </div>
+  </div>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+ <!-- ################################################################################################ -->
+<div class="wrapper row3">
+  <div class="rounded">
+    <main class="container clear"> 
+      <!-- main body --> 
+      <!-- ################################################################################################ -->
+      <p style="color:#af720aef; ;">Tayabas Western Academy's Online Payment Website</p>
+      <p>This website is an ongoing project, to be completed as a partial fulfillment of the requirements in PR2 and III .</p>
+      <p>This research/website introduces online payment and MyOnline Permit which aims to integrate the technology with school functions and services by creating an effective digital payment system that enhances efficiency for Tayabas Western Academy.</p>
+      <!-- ################################################################################################ --> 
+      <!-- / main body -->
+      <div class="clear"></div>
+    </main>
+  </div>
+</div>
+<!-- section 1 --> 
+<!-- ################################################################################################ -->
+<div class="wrapper row3">
+  <div class="rounded">
+    <main class="container clear"> 
+      <!-- main body --> 
+      <!-- ################################################################################################ -->
+      <div class="group btmspace-30"> 
+        <!-- Left Column -->
+        <div class="one_quarter first"> 
+          <!-- ################################################################################################ -->
+
+          <!-- ################################################################################################ --> 
+        </div>
+        <!-- / Left Column --> 
+        <!-- Middle Column -->
+        <div class="one_half"> 
+          <!-- ################################################################################################ -->
+          <h2>Latest News &amp; Events</h2>
+          <ul class="nospace listing">
+            <li class="clear">
+              <div class="imgl borderedbox"><img src="images/demo/120x120.gif" alt=""></div>
+              <p class="nospace btmspace-15"><a href="#">Sentumquisque morbi dui congue.</a></p>
+              <p>This is a W3C compliant free website template from <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>. This template is distributed using a <a href="http://www.os-templates.com/template-terms">Website Template Licence</a></p>
+            </li>
+            <li class="clear">
+              <div class="imgl borderedbox"><img src="images/demo/120x120.gif" alt=""></div>
+              <p class="nospace btmspace-15"><a href="#">Sentumquisque morbi dui congue.</a></p>
+              <p>You can use and modify the template for both personal and commercial use. You must keep all copyright information and credit links in the template and associated files.</p>
+            </li>
+            <li class="clear">
+              <div class="imgl borderedbox"><img src="images/demo/120x120.gif" alt=""></div>
+              <p class="nospace btmspace-15"><a href="#">Sentumquisque morbi dui congue.</a></p>
+              <p>For more CSS templates visit <a href="http://www.os-templates.com/">Free Website Templates</a>. Attincidunt vel nam a maurisus lacinia consectetus magnisl sed ac morbi. Inmaurisus habitur pretium eu et ac vest penatibus id lacus parturpis.</p>
+            </li>
+          </ul>
+          <p class="right"><a href="#">Click here to view all of the latest news and events &raquo;</a></p>
+          <!-- ################################################################################################ --> 
+        </div>
+        <!-- / Middle Column --> 
+        <!-- Right Column -->
+        <div class="one_quarter sidebar"> 
+          <!-- ################################################################################################ -->
+      
+          <!-- ################################################################################################ --> 
+        </div>
+        <!-- / Right Column --> 
+      </div>
+      <!-- ################################################################################################ --> 
+      <!-- ################################################################################################ -->
+ 
+      <!-- ################################################################################################ --> 
+      <!-- ################################################################################################ -->
+     
+      <!-- ################################################################################################ --> 
+      <!-- / main body -->
+      <div class="clear"></div>
+    </main>
+  </div>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+
+      </div>
+      <!-- ################################################################################################ --> 
+    </footer>
+  </div>
+</div>
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ --> 
+<!-- ################################################################################################ -->
+<div class="wrapper row5">
+  <div id="copyright" class="clear"> 
+    <!-- ################################################################################################ -->
+    <p style= "color: white;">Copyright &copy; 2025 - All Rights Reserved - Tayabas Western Academy</p>
+    <!-- ################################################################################################ --> 
+  </div>
+</div>
+<!-- JAVASCRIPTS --> 
+<script src="layout/scripts/jquery.min.js"></script> 
+<script src="layout/scripts/jquery.fitvids.min.js"></script> 
+<script src="layout/scripts/jquery.mobilemenu.js"></script> 
+<script src="layout/scripts/tabslet/jquery.tabslet.min.js"></script>
+</body>
+</html>

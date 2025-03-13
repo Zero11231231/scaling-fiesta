@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Permit Payment</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("jfSkeMw8MTedjl-eG");
+    })();
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('TWA3.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background-color: transparent;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[readonly] {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #qr-code {
+      display: none;
+      margin-top: 15px;
+    }
+    #qr-code img {
+      width: 150px;
+      height: 150px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    #clickableImage {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            width: 200px; 
+            height: 200px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+        }
+    #statusBar {
+            display: none;
+            position: absolute;
+            left: 220px; 
+            top: 110px; 
+            height: 50px; 
+  
+            background-color: transparent;
+            color: green;
+            padding: 10px;
+            border-radius: 5px;
+            
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: 1px solid green;
+            border-radius: 5px;
+            text-decoration: none;
+            color: black;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .option:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+  </style>
+</head>
+<body>
+  <img id="clickableImage" src="logo.png" alt="Clickable Image">
+
+  <div id="statusBar">
+      <a href="index.html" class="option">Home</a>
+      <a href="student_status.html" class="option">View Tuition</a>
+      <a href="student_fees.html" class="option">View Other Fees</a>
+      </div>
+
+  <div class="container">
+    <h2>E-Permit Payment</h2>
+    <label for="email">Enter Your Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="payment-type">Select Payment Type:</label>
+    <select id="payment-type" onchange="togglePaymentOptions()">
+      <option value="">Select</option>
+      <option value="tuition">Tuition</option>
+      <option value="other">Other Fees</option>
+    </select>
+
+    <div id="tuition-section" style="display: none;">
+      <label for="tuition-month">Select Month:</label>
+      <select id="tuition-month" onchange="updateTuitionAmount()">
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+      </select>
+      <label>Amount:</label>
+      <input type="text" id="tuition-amount" readonly>
+      <label>Payment Date:</label>
+      <input type="date" id="tuition-date">
+    </div>
+
+    <div id="other-fees-section" style="display: none;">
+      <label for="other-fees">What You Will Pay:</label>
+      <select id="other-fees" onchange="updateOtherAmount()">
+        <option value="Book Sem 1">Book Sem 1</option>
+        <option value="Book Sem 2">Book Sem 2</option>
+        <option value="Miscellaneous">Miscellaneous</option>
+        <option value="Graduation Fee">Graduation Fee</option>
+        <option value="Banahaw Breeze">Banahaw Breeze</option>
+        
+      </select>
+      <label>Amount:</label>
+      <input type="text" id="other-amount" readonly>
+      <label>Payment Date:</label>
+      <input type="date" id="other-date">
+    </div>
+
+    <label for="payment-method">Payment Method:</label>
+    <select id="payment-method" onchange="showQRCode()">
+      <option value="">Select Payment Method</option>
+      <option value="gcash">GCash</option>
+      <option value="paymaya">PayMaya</option>
+    </select>
+
+    <div id="qr-code">
+      <label>Scan QR Code:</label>
+      <img id="qr-image" src="" alt="QR Code">
+    </div>
+
+    <label for="proof">Upload Proof of Payment:</label>
+    <input type="file" id="proof" accept="image/*">
+
+    <button onclick="payNow()">Pay Now</button>
+  </div>
+
+  <script>
+    function togglePaymentOptions() {
+      let paymentType = document.getElementById("payment-type").value;
+      document.getElementById("tuition-section").style.display = (paymentType === "tuition") ? "block" : "none";
+      document.getElementById("other-fees-section").style.display = (paymentType === "other") ? "block" : "none";
+    }
+
+    function updateTuitionAmount() {
+      let month = document.getElementById("tuition-month").value;
+      let amount = ["January", "February", "March"].includes(month) ? 1240 : 930;
+      document.getElementById("tuition-amount").value = `₱${amount}`;
+    }
+
+    function updateOtherAmount() {
+      let feeType = document.getElementById("other-fees").value;
+      let feeAmounts = {
+        "Book Sem 1": 3000,
+        "Book Sem 2": 3000,
+        "Miscellaneous": 5000,
+        "Graduation Fee": 1300,
+        "Banahaw Breeze":  1500,
+      };
+      document.getElementById("other-amount").value = `₱${feeAmounts[feeType]}`;
+    }
+
+    function showQRCode() {
+      let method = document.getElementById("payment-method").value;
+      let qrImage = document.getElementById("qr-image");
+      let qrDiv = document.getElementById("qr-code");
+
+      if (method === "gcash") {
+        qrImage.src = "qr.jpg";
+      } else if (method === "paymaya") {
+        qrImage.src = "qr.jpg";
+      } else {
+        qrDiv.style.display = "none";
+        return;
+      }
+      qrDiv.style.display = "block";
+    }
+
+   function sendEmailConfirmation(email, month, feeType,  amount, date, method, serviceID, templateID) {
+    if (!templateID) {
+        console.error("❌ Error: Missing template ID.");
+        alert("❌ Email cannot be sent because the template ID is missing.");
+        return;
+    }
+
+    let templateParams = {
+        to_email: email,
+        fee_type: feeType,
+        amount: amount,
+        payment_date: date,
+        payment_method: method,
+        month:month
+    };
+
+    console.log("📧 Sending email with:", templateParams, "Service:", serviceID, "Template:", templateID);
+
+    emailjs.send(serviceID, templateID, templateParams)
+        .then(function(response) {
+            console.log("✅ Email sent successfully!", response);
+            alert("✅ Email confirmation sent successfully!");
+        })
+        .catch(function(error) {
+            console.error("❌ Failed to send email:", error);
+            alert("❌ Email failed to send. Check console for details.");
+        });
+}
+    function payNow() {
+    let email = document.getElementById("email").value;
+    let paymentType = document.getElementById("payment-type").value;
+    let proofFile = document.getElementById("proof").files[0];
+
+    if (!email || !paymentType || !proofFile) {
+        alert("⚠ Please complete all fields before submitting.");
+        return;
+    }
+
+    let reader = new FileReader();    
+    reader.onload = function () {  
+        let proofBase64 = reader.result; 
+        let paymentDate = new Date().toISOString().split('T')[0];
+        let paymentMethod = document.getElementById("payment-method").value;
+        let paymentDetails = JSON.parse(localStorage.getItem("paymentDetails")) || {};
+        let feePaymentDetails = JSON.parse(localStorage.getItem("feePaymentDetails")) || {};
+
+        let month = "";
+        let feeType = "";
+        let amount = 0;
+
+        if (paymentType === "tuition") {
+            let monthInput = document.getElementById("tuition-month");
+            if (monthInput) {  
+                month = monthInput.value;
+            } else {
+                console.error("⚠ Error: Element with id 'tuition-month' not found.");
+                alert("⚠ Error: Tuition month selection is missing.");
+                return;
+            }
+
+            amount = document.getElementById("tuition-amount").value;
+            paymentDetails[month] = { status: "Pending", amount, paymentDate, paymentMethod, proof: proofBase64 };
+            localStorage.setItem("paymentDetails", JSON.stringify(paymentDetails));
+
+            sendEmailConfirmation(email, month, feeType, amount, paymentDate, paymentMethod, "service_251sctv", "template_t1fzjje");
+        } else {
+            let feeInput = document.getElementById("other-fees");
+            if (feeInput) {  
+                feeType = feeInput.value;
+            } else {
+                console.error("⚠ Error: Element with id 'other-fees' not found.");
+                alert("⚠ Error: Fee type selection is missing.");
+                return;
+            }
+
+            amount = document.getElementById("other-amount").value;
+            feePaymentDetails[feeType] = { status: "Pending", amount, paymentDate, paymentMethod, proof: proofBase64 };
+            localStorage.setItem("feePaymentDetails", JSON.stringify(feePaymentDetails));
+
+            sendEmailConfirmation(email, month, feeType, amount, paymentDate, paymentMethod, "service_251sctv", "template_r6sqwve");
+        }
+       
+        console.log("Checking email parameters:", {
+    email, month, feeType, amount, paymentDate, paymentMethod
+});
+      
+alert(`✅ Payment for ${paymentType === "tuition" ? "Tuition" : feeType} submitted successfully!`);
+       
+
+        console.log("Template Params:", templateParams); 
+
+        
+    };
+
+     
+
+    reader.readAsDataURL(proofFile);  
+}
+document.getElementById("clickableImage").addEventListener("click", function() {
+        let statusBar = document.getElementById("statusBar");
+        statusBar.style.display = (statusBar.style.display === "none") ? "flex" : "none";
+    });
+
+  </script>
+</body>
+</html>
